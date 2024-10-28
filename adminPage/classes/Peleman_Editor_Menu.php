@@ -2,27 +2,36 @@
 declare(strict_types=1);
 namespace WSPEC\adminPage\classes;
 
-class Peleman_Editor_Menu {
-    public const PAGE_SLUG = 'peleman-control-panel';
+use WSPBPE\includes\Admin_Menu;
 
-    public function __construct() {
-        // Only hook the menu setup when the admin area is being viewed
-        if (is_admin()) {
-            add_filter(
-                'WSPBPE_get_admin_menu_tabs',
-                array($this, 'add_Peleman_editor_panel'),
-                10,
-                1
-            );
-        }
+class Peleman_Editor_Menu {
+
+    private string $page_slug;
+	private string $title;
+	private string $editor_option_group;
+
+    public function __construct(){
+		
+        $this->page_slug = 'peleman-control-panel';
+        $this->title = 'Editor';
+        $this->editor_option_group = 'WSPEC-editor-options-group';
+			
+        
+    }
+	
+	public function get_title(){
+		return $this->title;
+	}
+
+	public function render_menu(): void
+    {
+        settings_fields($this->editor_option_group);
+        do_settings_sections($this->page_slug);
+	
+        submit_button();
     }
 
     // Method to add the control panel menu
-    public function add_Peleman_editor_panel(): void {
-
-        echo "<p> HELLO </p>";
-
-    }
 
     public function register_settings(): void
     {	
@@ -98,18 +107,53 @@ class Peleman_Editor_Menu {
                 'option' => 'wspie_api_key',
             )
         );
-        add_settings_field(
-            'wspie_api_test',
-            __("PIE API test", 'Peleman-Webshop-Package'),
-            array($this, 'add_api_test_button'),
-            'peleman-control-panel',
-            "wsppe_settings_editors",
-            array(
-                'id' => 'wspie_api_test',
-                'type' => 'button',
-                'title' => __('test credentials', 'PelemanWebshopPackage')
-            )
-        );
+//         add_settings_field(
+//             'wspie_api_test',
+//             __("PIE API test", 'Peleman-Webshop-Package'),
+//             array($this, 'add_api_test_button'),
+//             'peleman-control-panel',
+//             "wsppe_settings_editors",
+//             array(
+//                 'id' => 'wspie_api_test',
+//                 'type' => 'button',
+//                 'title' => __('test credentials', 'PelemanWebshopPackage')
+//             )
+//         );
 
+    }
+	     public  function text_property_callback(array $args): void
+    {
+        $option = $args['option'];
+        $value = get_option($option);
+        $placeholder = isset($args['placeholder']) ? $args['placeholder'] : '';
+        $description = isset($args['description']) ? $args['description'] : '';
+
+        $classArray = isset($args['classes']) ? $args['classes'] : [];
+        $classArray[] = 'regular-text';
+        $classes = implode(" ", $classArray);
+?>
+        <input type="text" id="<?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="<?php echo esc_html($value); ?>" placeholder="<?php echo esc_html($placeholder); ?>" class="<?php esc_attr($classes); ?>" size=40 />
+        <?php
+        if ($description) {
+            echo wp_kses_post("<p class='description'>{$description}</p>");
+        }
+    }
+
+     public  function bool_property_callback(array $args): void
+    {
+        $option = $args['option'];
+        $description = $args['description'] ?: '';
+        $value = get_option($option);
+
+        $classArray = isset($args['classes']) ? $args['classes'] : [];
+        $classArray[] = 'regular-text';
+        $classes = implode(" ", $classArray);
+
+        ?>
+        <input type='checkbox' id=" <?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="1" class="<?php esc_attr($classes); ?>" <?php checked(1, (int)$value, true); ?> />
+<?php
+        if ($description) {
+            echo wp_kses_post("<p class='description'>{$description}</p>");
+        }
     }
 }
