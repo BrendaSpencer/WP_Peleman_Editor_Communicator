@@ -30,12 +30,10 @@ class Peleman_Editor_Menu {
         submit_button();
     }
 
-    // Method to add the control panel menu
+    
 
     public function register_settings(): void
-    {	
-
-			
+    {		
         register_setting(
 			$this->option_group, 
 			'wspie_domain', array(
@@ -60,12 +58,7 @@ class Peleman_Editor_Menu {
             'show_in_rest' => false,
             'default' => ''
         ));
-
-
-
-        $this->add_menu_components();
-
-        
+        $this->add_menu_components();  
     }
 	
 
