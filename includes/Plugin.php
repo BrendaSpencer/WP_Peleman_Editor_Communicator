@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace WSPEC\includes;
 
-use WSPEC\adminPage\classes\Peleman_Editor_Menu;
+use WSPEC\adminPage\controllers\Editor_tab_controller;
 use WSPEC\includes\Enqueue_Scripts;
 use WSPEC\includes\Enqueue_Styles;
 
@@ -37,6 +37,6 @@ class Plugin {
 
     public function create_editor_communicator_admin_classes() {
         
-        new Peleman_Editor_Menu();
+        new Editor_tab_controller();
     }
 }
