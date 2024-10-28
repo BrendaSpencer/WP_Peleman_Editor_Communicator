@@ -8,13 +8,13 @@ class Peleman_Editor_Menu {
 
     private string $page_slug;
 	private string $title;
-	private string $editor_option_group;
+	private string $option_group;
 
     public function __construct(){
 		
         $this->page_slug = 'peleman-control-panel';
-        $this->title = 'Editor';
-        $this->editor_option_group = 'WSPEC-editor-options-group';
+        $this->title = 'Peleman Editor Credentials';
+        $this->option_group = 'WSPEC-editor-options-group';
 			
         
     }
@@ -25,9 +25,8 @@ class Peleman_Editor_Menu {
 
 	public function render_menu(): void
     {
-        settings_fields($this->editor_option_group);
+        settings_fields($this->option_group);
         do_settings_sections($this->page_slug);
-	
         submit_button();
     }
 
@@ -37,21 +36,24 @@ class Peleman_Editor_Menu {
     {	
 
 			
-        register_setting('peleman-control-panel', 'wspie_domain', array(
-            'type' => 'string',
-            'description' => 'base Site Address of the PIE editor',
-            'sanitize_callback' => 'esc_url_raw',
-            'show_in_rest' => false,
-            'default' => ''
-        ));
-        register_setting('peleman-control-panel', 'wspie_customer_id', array(
+        register_setting(
+			$this->option_group, 
+			'wspie_domain', array(
+				'type' => 'string',
+				'description' => 'base Site Address of the PIE editor',
+				'sanitize_callback' => 'esc_url_raw',
+				'show_in_rest' => false,
+				'default' => ''
+        	)
+		);
+        register_setting($this->option_group, 'wspie_customer_id', array(
             'type' => 'string',
             'description' => 'customer id for the PIE Editor',
             'sanitize_callback' => 'wp_filter_nohtml_kses',
             'show_in_rest' => false,
             'default' => ''
         ));
-        register_setting('peleman-control-panel', 'wspie_api_key', array(
+        register_setting($this->option_group, 'wspie_api_key', array(
             'type' => 'string',
             'description' => 'customer api key for PIE Editor',
             'sanitize_callback' => 'wp_filter_nohtml_kses',
@@ -70,17 +72,17 @@ class Peleman_Editor_Menu {
     private function add_menu_components(): void
     {
         add_settings_section(
-            'wsppe_settings_editors',
-            __("Editor", 'Peleman-Webshop-Package'),
+      	$this->option_group,
+            __("Editor", 'Peleman-Base-Products-Extender'),
             null,
-            'peleman-control-panel',
+            $this->page_slug,
         );
         add_settings_field(
             'wspie_domain',
-            __("PIE domain (URL)", 'Peleman-Webshop-Package'),
+            __("PIE domain (URL)", 'Peleman-Base-Products-Extender'),
             array($this, 'text_property_callback'),
-            'peleman-control-panel',
-            "wsppe_settings_editors",
+            $this->page_slug,
+            $this->option_group,
             array(
                 'option' => 'wspie_domain',
                 'placeholder' => "https://deveditor.peleman.com",
@@ -89,34 +91,34 @@ class Peleman_Editor_Menu {
         );
         add_settings_field(
             'wspie_customer_id',
-            __("PIE Customer ID", 'Peleman-Webshop-Package'),
+            __("PIE Customer ID", 'Peleman-Base-Products-Extender'),
             array($this, 'text_property_callback'),
-            'peleman-control-panel',
-            "wsppe_settings_editors",
+            $this->page_slug,
+           $this->option_group,
             array(
                 'option' => 'wspie_customer_id',
             )
         );
         add_settings_field(
             'wspie_api_key',
-            __("PIE API key", 'Peleman-Webshop-Package'),
+            __("PIE API key", 'Peleman-Base-Products-Extender'),
             array($this, 'text_property_callback'),
-            'peleman-control-panel',
-            "wsppe_settings_editors",
+            $this->page_slug,
+            $this->option_group,
             array(
                 'option' => 'wspie_api_key',
             )
         );
 //         add_settings_field(
 //             'wspie_api_test',
-//             __("PIE API test", 'Peleman-Webshop-Package'),
+//             __("PIE API test", 'Peleman-Base-Products-Extender'),
 //             array($this, 'add_api_test_button'),
-//             'peleman-control-panel',
-//             "wsppe_settings_editors",
+//             $this->page_slug,
+//             $this->option_group,
 //             array(
 //                 'id' => 'wspie_api_test',
 //                 'type' => 'button',
-//                 'title' => __('test credentials', 'PelemanWebshopPackage')
+//                 'title' => __('test credentials', 'Peleman-Base-Products-Extender')
 //             )
 //         );
 

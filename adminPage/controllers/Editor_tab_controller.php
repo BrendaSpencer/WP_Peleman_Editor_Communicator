@@ -8,6 +8,7 @@ use WSPEC\adminPage\classes\Peleman_Editor_Menu;
 class Editor_tab_controller{
     public function __construct() {
         if (is_admin()) {
+			add_action('admin_init', [$this, 'register_settings']);
             add_filter(
                 'WSPBPE_get_admin_menu_tabs',
                 array($this, 'add_Peleman_editor_panel'),
@@ -19,11 +20,16 @@ class Editor_tab_controller{
         }
     }
 	
+	public function register_settings(){
+		$tabs['Editor'] = new Peleman_Editor_Menu;
+		$tabs['Editor']->register_settings();
+	}
+	
 
     
     public function add_Peleman_editor_panel(array $tabs) {
 		$tabs['Editor'] = new Peleman_Editor_Menu;
-		$tabs['Editor']->register_settings();
+		
 		return $tabs;
     }
 	
