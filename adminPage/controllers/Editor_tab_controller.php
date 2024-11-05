@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace WSPEC\adminPage\controllers;
 
 use WSPBPE\includes\Admin_Menu;
-use WSPEC\adminPage\classes\Peleman_Editor_Menu;
+use WSPEC\adminPage\Models\Peleman_Editor_Menu;
 
 class Editor_tab_controller{
     public function __construct() {

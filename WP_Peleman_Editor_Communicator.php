@@ -29,11 +29,10 @@ if (!is_plugin_active('woocommerce/woocommerce.php')) {
     wp_die(esc_html('The "WooCommerce" plugin has not been activated. ← <a href="' . $site_domain . '/wp-admin/plugins.php"> Please activate it first.</a>'));
 }
 
-// Register activation hook. Called once when the plugin is activated
+
 register_activation_hook(__FILE__, function () {
     $plugin = new Plugin();
     $plugin->activate();
 });
 
-// Initialize the plugin on every page load
-$plugin = new Plugin();  // This will initialize the admin menu on every page load.
+$plugin = new Plugin(); 

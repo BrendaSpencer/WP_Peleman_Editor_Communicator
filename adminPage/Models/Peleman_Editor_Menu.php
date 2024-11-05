@@ -1,6 +1,6 @@
 <?php 
 declare(strict_types=1);
-namespace WSPEC\adminPage\classes;
+namespace WSPEC\adminPage\Models;
 
 use WSPBPE\includes\Admin_Menu;
 
