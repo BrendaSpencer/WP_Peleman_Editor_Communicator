@@ -84,6 +84,144 @@ class Editor_Custom_Meta{
 		$this->PelemanPersonalisation   = $product->get_meta(self::PELEMAN_PERSONALISATION_KEY) ?? '' ;
         $this->editorInstructions   = $product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) ?? [] ;
     }
+
+    //  setters for the properties here
+    public function set_editorId($id){
+        $this->editorId = $id;
+    }
+    public function set_customizable($customizable){
+        $this->customizable = $customizable;
+    }
+    public function set_templateId($templateId){
+        $this->templateId = $templateId;
+    }
+    public function set_designId($designId){
+        $this->designId = $designId;
+    }
+    public function set_designProjectId($designProjectId){
+        $this->designProjectId = $designProjectId;
+    }
+    public function set_colorCode($colorCode){
+        $this->colorCode = $colorCode;
+    }
+    public function set_backgroundId($backgroundId){
+        $this->backgroundId = $backgroundId;
+    }
+    public function set_price_per_extra_page($price_per_extra_page){
+
+        $this->price_per_extra_page = $price_per_extra_page;
+    }
+    public function set_basePrice($basePrice){
+        $this->basePrice = $basePrice;
+    }
+    public function set_default_page_amount($default_page_amount){
+        $this->default_page_amount  = $default_page_amount;
+    }
+    public function set_numPages($numPages){
+        $this->numPages = $numPages;
+    }
+    public function set_usesImageUpload($usesImageUpload){
+        $this->usesImageUpload = $usesImageUpload;
+    }
+    public function set_minImages($minImages){
+        $this->minImages = $minImages;
+    }
+    public function set_maxImages($maxImages){
+        $this->maxImages = $maxImages;
+    }
+    public function set_autofill($autofill){
+        $this->autofill = $autofill;
+    }
+    public function set_useProjectReference($useProjectReference){
+        $this->useProjectReference = $useProjectReference;
+    }
+    public function set_overrideThumb($overrideThumb){
+        $this->overrideThumb = $overrideThumb;
+    }
+    public function set_peleman_personalisation($PelemanPersonalisation){
+        $this->PelemanPersonalisation   = $PelemanPersonalisation;
+    }
+    public function set_editor_instructions($editorInstructions){
+        $this->editorInstructions = $editorInstructions;
+    }
+
+        // getters for the properties here
+    public function get_editorId() {
+        return $this->editorId;
+    }
+    
+    public function get_customizable() {
+        return $this->customizable;
+    }
+    
+    public function get_templateId() {
+        return $this->templateId;
+    }
+    
+    public function get_designId() {
+        return $this->designId;
+    }
+    
+    public function get_designProjectId() {
+        return $this->designProjectId;
+    }
+    
+    public function get_colorCode() {
+        return $this->colorCode;
+    }
+    
+    public function get_backgroundId() {
+        return $this->backgroundId;
+    }
+    
+    public function get_price_per_extra_page() {
+        return $this->price_per_extra_page;
+    }
+    
+    public function get_basePrice() {
+        return $this->basePrice;
+    }
+    
+    public function get_default_page_amount() {
+        return $this->default_page_amount;
+    }
+    
+    public function get_numPages() {
+        return $this->numPages;
+    }
+    
+    public function get_usesImageUpload() {
+        return $this->usesImageUpload;
+    }
+    
+    public function get_minImages() {
+        return $this->minImages;
+    }
+    
+    public function get_maxImages() {
+        return $this->maxImages;
+    }
+    
+    public function get_autofill() {
+        return $this->autofill;
+    }
+    
+    public function get_useProjectReference() {
+        return $this->useProjectReference;
+    }
+    
+    public function get_overrideThumb() {
+        return $this->overrideThumb;
+    }
+    
+    public function get_peleman_personalisation() {
+        return $this->PelemanPersonalisation;
+    }
+    
+    public function get_editor_instructions() {
+        return $this->editorInstructions;
+    }
+
     public function update_meta_data($product){
 
         $product->update_meta_data(self::PIE_EDITOR_ID_KEY, $this->editorId);
