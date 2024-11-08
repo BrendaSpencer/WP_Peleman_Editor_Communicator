@@ -11,7 +11,7 @@ use WSPEC\includes\Enqueue_Styles;
 class Plugin {
 
     public function __construct() {
-        // Hook to initialize plugin when WordPress is ready
+       
         add_action('plugins_loaded', [$this, 'initialize_plugin']);
     }
 
@@ -22,7 +22,7 @@ class Plugin {
     }
 
     public function activate() {
-        // Called once when the plugin is activated
+  
         $this->enqueue_extender_scripts();
         $this->enqueue_extender_styles();
     }
