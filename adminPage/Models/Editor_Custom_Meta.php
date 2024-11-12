@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace WSPEC\adminPage\Models;
+use WSPEC\includes\Editor_Instructions;
 
 class Editor_Custom_Meta{
 	// Editor data constants and variables for editor
@@ -82,7 +83,7 @@ class Editor_Custom_Meta{
         $this->overrideThumb        = (bool)$product->get_meta(self::OVERRIDE_CART_THUMB_KEY) ?: false;
         
 		$this->PelemanPersonalisation   = $product->get_meta(self::PELEMAN_PERSONALISATION_KEY) ?? '' ;
-        $this->editorInstructions   = $product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) ?? [] ;
+        $this->editorInstructions   = $product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) ?? [];
     }
 
     //  setters for the properties here
@@ -219,8 +220,12 @@ class Editor_Custom_Meta{
     }
     
     public function get_editor_instructions() {
-        return $this->editorInstructions;
-    }
+     		// Check for existing instructions !!!!
+         error_log( print_r(Editor_Instructions::get_Defaults(),true));
+            return Editor_Instructions::get_Defaults();
+        }
+        
+    
 
     public function update_meta_data($product){
 
