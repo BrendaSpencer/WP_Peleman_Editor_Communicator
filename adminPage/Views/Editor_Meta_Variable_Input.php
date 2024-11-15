@@ -65,6 +65,16 @@ class Editor_Meta_Variable_Input {
             'wrapper_class' => 'form-row form-row-first wsppe-form-row-padding-5',
         ));
 			woocommerce_wp_text_input(array(
+            'id'            => Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY  . "[{$loop}]",
+            'name'          => Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY  . "[{$loop}]",
+            'label'         => __('Peleman Personalisation', 'Peleman-Webshop-Package'),
+            'value'         => $Base_Meta->get_peleman_personalisation(),
+            'desc_tip'      => true,
+            'description'   =>  __('You can add your personalisation codes to here to sent to editor', 'Peleman-Webshop-Package'),
+            'wrapper_class' => 'form-row form-row-last wsppe-form-row-padding-5',
+            'placeholder'   => 'Peleman Personalisation'
+        ));
+			woocommerce_wp_text_input(array(
 		'id'            => Editor_Custom_Meta::PAGE_AMOUNT_KEY . "[{$loop}]",
 		'name'          => Editor_Custom_Meta::PAGE_AMOUNT_KEY  . "[{$loop}]",
 		'label'         => __('Default number of pages', 'Peleman-Webshop-Package'),
@@ -214,16 +224,7 @@ class Editor_Meta_Variable_Input {
             'wrapper_class' => 'form-row form-row-first wsppe-form-row-padding-5',
         ));
 		
-			woocommerce_wp_text_input(array(
-            'id'            => Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY  . "[{$loop}]",
-            'name'          => Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY  . "[{$loop}]",
-            'label'         => __('Peleman Personalisation', 'Peleman-Webshop-Package'),
-            'value'         => $Base_Meta->get_peleman_personalisation(),
-            'desc_tip'      => true,
-            'description'   =>  __('You can add your personalisation codes to here to sent to editor', 'Peleman-Webshop-Package'),
-            'wrapper_class' => 'form-row form-row-last wsppe-form-row-padding-5',
-            'placeholder'   => 'Peleman Personalisation'
-        ));
+
 
 	?>
 			 			  
@@ -256,11 +257,14 @@ class Editor_Meta_Variable_Input {
     }
 			public function save_variables(int $variation_id, int $loop){
 			$product = wc_get_product($variation_id);
+		
 			$Base_Meta = new Editor_Custom_Meta($product);
 			$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+				error_log('POST === '. print_r($post, true));
 		
-			$Base_Meta->set_customizable((bool)(isset($post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop]) ? $post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop] : false));
+			$Base_Meta->set_customizable((bool)($post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop]));
 
+			$Base_Meta->set_editorId($post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop]);
 			$Base_Meta->set_templateId((string)(isset($post[Editor_Custom_Meta::PIE_TEMPLATE_ID_KEY][$loop]) ? $post[Editor_Custom_Meta::PIE_TEMPLATE_ID_KEY][$loop] : ''));
     	    $Base_Meta->set_designId((string)(isset($post[Editor_Custom_Meta::PIE_DESIGN_ID_KEY][$loop]) ? $post[Editor_Custom_Meta::PIE_DESIGN_ID_KEY][$loop] : ''));
     	    $Base_Meta->set_designProjectId((string)(isset($post[Editor_Custom_Meta::PIE_DESIGN_PROJECT_ID_KEY][$loop]) ? $post[Editor_Custom_Meta::PIE_DESIGN_PROJECT_ID_KEY][$loop] : ''));

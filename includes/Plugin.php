@@ -17,6 +17,7 @@ class Plugin {
     }
 
     public function initialize_plugin() {
+		$this->enqueue_editor_styles();
         if (is_admin()) {
             $this->create_editor_communicator_admin_classes();
         }
@@ -24,15 +25,14 @@ class Plugin {
 
     public function activate() {
         
-        $this->enqueue_extender_scripts();
-        $this->enqueue_extender_styles();
+
     }
 
     private function enqueue_extender_scripts() {
         new Enqueue_Scripts();
     }
 
-    private function enqueue_extender_styles() {
+    private function enqueue_editor_styles() {
         new Enqueue_Styles();
     }
 

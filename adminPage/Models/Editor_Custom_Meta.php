@@ -16,7 +16,7 @@ class Editor_Custom_Meta{
     private string $colorCode;
     private string $backgroundId;
 	
-	public const PIE_EDITOR_ID_KEY          = 'pwp_editor_id';
+	public const PIE_EDITOR_ID_KEY          = 'pie_editor_id';
     public const PIE_TEMPLATE_ID_KEY        = 'pie_template_id'; 
 	public const PIE_DESIGN_ID_KEY		    = 'pie_design_id';
 	public const PIE_DESIGN_PROJECT_ID_KEY  = 'pie_design_project_id';
@@ -61,7 +61,7 @@ class Editor_Custom_Meta{
     public const EDITOR_INSTRUCTIONS_KEY        = 'editor_instructions';
 	
 	public function __construct($product){
-        $this->editorId             = (string)$product->get_meta(SELF::PIE_EDITOR_ID_KEY) ?: '';
+        $this->editorId             = (string)$product->get_meta(SELF::PIE_EDITOR_ID_KEY) ?? '';
         $this->customizable         = !empty($this->editorId);
         $this->templateId           = $product->get_meta(self::PIE_TEMPLATE_ID_KEY) ?? '';
         $this->designId             = $product->get_meta(self::PIE_DESIGN_ID_KEY) ?? '';
@@ -82,13 +82,16 @@ class Editor_Custom_Meta{
         $this->useProjectReference  = (bool)$product->get_meta(self::USE_PROJECT_REFERENCE_KEY) ?: false;
         $this->overrideThumb        = (bool)$product->get_meta(self::OVERRIDE_CART_THUMB_KEY) ?: false;
         
-		$this->PelemanPersonalisation   = $product->get_meta(self::PELEMAN_PERSONALISATION_KEY) ?? '' ;
-        $this->editorInstructions   = $product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) ?? [];
+		$this->PelemanPersonalisation = $product->get_meta(self::PELEMAN_PERSONALISATION_KEY) ?? '' ;
+        $this->editorInstructions   = !empty($product->get_meta(self::EDITOR_INSTRUCTIONS_KEY)) ? $product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) : Editor_Instructions::get_Defaults();
+		
     }
 
     //  setters for the properties here
     public function set_editorId($id){
         $this->editorId = $id;
+		$this->customizable = !empty($editorId);
+        return $this;
     }
     public function set_customizable($customizable){
         $this->customizable = $customizable;
@@ -220,9 +223,7 @@ class Editor_Custom_Meta{
     }
     
     public function get_editor_instructions() {
-     		// Check for existing instructions !!!!
-         error_log( print_r(Editor_Instructions::get_Defaults(),true));
-            return Editor_Instructions::get_Defaults();
+		   return $this->editorInstructions;
         }
         
     
@@ -230,7 +231,7 @@ class Editor_Custom_Meta{
     public function update_meta_data($product){
 
         $product->update_meta_data(self::PIE_EDITOR_ID_KEY, $this->editorId);
-        $product->update_meta_data(self::PIE_TEMPLATE_ID_KEY, $this->designId);
+        $product->update_meta_data(self::PIE_TEMPLATE_ID_KEY, $this->get_templateId);
         $product->update_meta_data(self::PIE_DESIGN_ID_KEY, $this->designId);
 		$product->update_meta_data(self::PIE_DESIGN_PROJECT_ID_KEY, $this->designProjectId);
 		$product->update_meta_data(self::PIE_COLOR_CODE_KEY, $this->colorCode); 

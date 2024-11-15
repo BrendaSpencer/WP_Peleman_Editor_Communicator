@@ -9,7 +9,7 @@ use WSPEC\adminPage\Views\Editor_Meta_Simple_Input;
 class Editor_Meta_Controller {
 
     public function __construct() {
-		error_log('=== in constructor meta data ===');
+		
 		$Variable_input = new Editor_Meta_Variable_Input();
 		$Simple_input = new Editor_Meta_Simple_Input();
 		add_action('woocommerce_product_after_variable_attributes', [$Variable_input, 'render_Variable_fields'], 9, 3);
