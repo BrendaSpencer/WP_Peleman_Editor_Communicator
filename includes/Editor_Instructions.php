@@ -62,15 +62,13 @@ class Editor_Instructions{
 
     public static function get_Defaults(){
 
-     $converted_Defaults = [];
+    $converted_Defaults = [];
         foreach(self::$Default_instructs as $key => $value){
             $id = str_replace(' ', '', $key);
 			$instruction = new self($key, strtolower($id), $value ); 
 			array_push($converted_Defaults , $instruction);
-           
         }
-		 return $converted_Defaults;
-
+		return $converted_Defaults;
     }
 
 }

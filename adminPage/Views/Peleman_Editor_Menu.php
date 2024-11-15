@@ -15,7 +15,6 @@ class Peleman_Editor_Menu {
         $this->page_slug = 'peleman-control-panel';
         $this->title = 'Peleman Editor Credentials';
         $this->option_group = 'WSPEC-editor-options-group';
-			
         
     }
 	
@@ -42,8 +41,7 @@ class Peleman_Editor_Menu {
 				'sanitize_callback' => 'esc_url_raw',
 				'show_in_rest' => false,
 				'default' => ''
-        	)
-		);
+        ));
         register_setting($this->option_group, 'wspie_customer_id', array(
             'type' => 'string',
             'description' => 'customer id for the PIE Editor',
@@ -65,9 +63,9 @@ class Peleman_Editor_Menu {
     private function add_menu_components(): void
     {
         add_settings_section(
-      	$this->option_group,
+      	    $this->option_group,
             __("Editor", 'Peleman-Base-Products-Extender'),
-            null,
+            '',
             $this->page_slug,
         );
         add_settings_field(
@@ -87,7 +85,7 @@ class Peleman_Editor_Menu {
             __("PIE Customer ID", 'Peleman-Base-Products-Extender'),
             array($this, 'text_property_callback'),
             $this->page_slug,
-           $this->option_group,
+            $this->option_group,
             array(
                 'option' => 'wspie_customer_id',
             )
@@ -116,7 +114,7 @@ class Peleman_Editor_Menu {
 //         );
 
     }
-	     public  function text_property_callback(array $args): void
+	public  function text_property_callback(array $args): void
     {
         $option = $args['option'];
         $value = get_option($option);
@@ -126,15 +124,15 @@ class Peleman_Editor_Menu {
         $classArray = isset($args['classes']) ? $args['classes'] : [];
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
-?>
+    ?>
         <input type="text" id="<?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="<?php echo esc_html($value); ?>" placeholder="<?php echo esc_html($placeholder); ?>" class="<?php esc_attr($classes); ?>" size=40 />
-        <?php
+    <?php
         if ($description) {
             echo wp_kses_post("<p class='description'>{$description}</p>");
         }
     }
 
-     public  function bool_property_callback(array $args): void
+    public  function bool_property_callback(array $args): void
     {
         $option = $args['option'];
         $description = $args['description'] ?: '';
@@ -144,9 +142,9 @@ class Peleman_Editor_Menu {
         $classArray[] = 'regular-text';
         $classes = implode(" ", $classArray);
 
-        ?>
+    ?>
         <input type='checkbox' id=" <?php echo esc_attr($option); ?>" name="<?php echo esc_attr($option); ?>" value="1" class="<?php esc_attr($classes); ?>" <?php checked(1, (int)$value, true); ?> />
-<?php
+    <?php
         if ($description) {
             echo wp_kses_post("<p class='description'>{$description}</p>");
         }

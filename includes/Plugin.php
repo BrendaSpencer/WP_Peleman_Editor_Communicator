@@ -38,7 +38,6 @@ class Plugin {
 
     public function create_editor_communicator_admin_classes() {
 		new Editor_Meta_Controller();
-        
         new Editor_Tab_Controller();
     }
 }
