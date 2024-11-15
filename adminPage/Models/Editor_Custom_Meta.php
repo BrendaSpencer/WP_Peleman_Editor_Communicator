@@ -231,7 +231,7 @@ class Editor_Custom_Meta{
     public function update_meta_data($product){
 
         $product->update_meta_data(self::PIE_EDITOR_ID_KEY, $this->editorId);
-        $product->update_meta_data(self::PIE_TEMPLATE_ID_KEY, $this->get_templateId);
+        $product->update_meta_data(self::PIE_TEMPLATE_ID_KEY, $this->templateId);
         $product->update_meta_data(self::PIE_DESIGN_ID_KEY, $this->designId);
 		$product->update_meta_data(self::PIE_DESIGN_PROJECT_ID_KEY, $this->designProjectId);
 		$product->update_meta_data(self::PIE_COLOR_CODE_KEY, $this->colorCode); 
