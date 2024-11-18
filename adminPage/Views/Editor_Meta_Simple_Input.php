@@ -18,7 +18,7 @@ class Editor_Meta_Simple_Input{
         $Base_Meta = new Editor_Custom_Meta($product);
         $post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     
-        $Base_Meta->set_customizable($post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY] ?? '');
+    	error_log('POST === ' . print_r($post, true));
 
         $Base_Meta->set_editorId(id: (string)$post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY] ?? '');
         $Base_Meta->set_templateId((string)$post[Editor_Custom_Meta::PIE_TEMPLATE_ID_KEY] ?? '');
@@ -40,7 +40,7 @@ class Editor_Meta_Simple_Input{
         $Base_Meta->set_useProjectReference((bool)$post[Editor_Custom_Meta::USE_PROJECT_REFERENCE_KEY] ??  false);
         $Base_Meta->set_overrideThumb((bool)$post[Editor_Custom_Meta::OVERRIDE_CART_THUMB_KEY] ?? false);
         $Base_Meta->set_peleman_personalisation((string)$post[Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY] ?? '');
-        $Base_Meta->set_editor_instructions((array)$post[Editor_Custom_Meta::EDITOR_INSTRUCTIONS_KEY] ?? []);
+       	$Base_Meta->set_editor_instructions($post['instructions'] ??  null);
 
     $Base_Meta->update_meta_data($product);
 }
@@ -275,8 +275,8 @@ class Editor_Meta_Simple_Input{
             $index = 0;
             foreach ($instructions as $key => $instruction) {
             woocommerce_wp_checkbox(array(
-                    'id'            => $key ,
-                    'name'          => $key ,
+                    'id'            => $instruction->get_key(),
+                    'name'          => "instructions[" . $instruction->get_key()."]" ,
                     'label'         => $instruction->get_label(),
                     'value'         => $instruction->is_enabled() ? 'yes' : 'no',
                     'desc_tip'      => true,
