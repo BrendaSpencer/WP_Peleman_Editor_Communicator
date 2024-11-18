@@ -281,7 +281,6 @@ class Editor_Meta_Variable_Input {
         $Base_Meta->set_useProjectReference((bool)$post[Editor_Custom_Meta::USE_PROJECT_REFERENCE_KEY][$loop] ?? false);
         $Base_Meta->set_overrideThumb((bool)$post[Editor_Custom_Meta::OVERRIDE_CART_THUMB_KEY][$loop] ?? false);
         $Base_Meta->set_peleman_personalisation((string)$post[Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY][$loop] ?? '');
-		error_log('POST in variable input === ' . $post['instructions']);
         $Base_Meta->set_editor_instructions($post['instructions'] ??  null);
 
 		$Base_Meta->update_meta_data($product);

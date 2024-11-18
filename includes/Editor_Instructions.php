@@ -65,7 +65,7 @@ class Editor_Instructions{
     $converted_Defaults = [];
         foreach(self::$Default_instructs as $key => $value){
             $id = str_replace(' ', '', $key);
-			$instruction = new self($key, strtolower($id), $value ); 
+			$instruction = new self(strtolower($id),$key, $value ); 
 			array_push($converted_Defaults , $instruction);
         }
 		return $converted_Defaults;
