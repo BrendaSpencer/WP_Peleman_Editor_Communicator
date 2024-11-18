@@ -58,7 +58,7 @@ class Editor_Custom_Meta{
     private string $PelemanPersonalisation;
 
     public const PELEMAN_PERSONALISATION_KEY    = 'peleman_personalisations';
-    public const EDITOR_INSTRUCTIONS_KEY        = 'editor_instructions';
+    public const EDITOR_INSTRUCTIONS_KEY        = 'pie_editor_instructions';
 	
 	public function __construct($product){
         $this->editorId             = (string)$product->get_meta(SELF::PIE_EDITOR_ID_KEY) ?? '';
@@ -74,16 +74,17 @@ class Editor_Custom_Meta{
         $this->default_page_amount  = (int)$product->get_meta(self::PAGE_AMOUNT_KEY) ?? 1 ;
         $this->numPages             = (int)$product->get_meta(self::NUM_PAGES_KEY) ?? -1;
 
-        $this->usesImageUpload      = (bool)$product->get_meta(self::USE_IMAGE_UPLOAD_KEY);
+        $this->usesImageUpload      = (bool)$product->get_meta(self::USE_IMAGE_UPLOAD_KEY) ?? false;
         $this->minImages            = (int)$product->get_meta(self::MIN_IMAGES_KEY) ?? 0;
         $this->maxImages            = (int)$product->get_meta(self::MAX_IMAGES_KEY) ?? 0;
-        $this->autofill             = (bool)$product->get_meta(self::AUTOFILL_KEY);
+        $this->autofill             = (bool)$product->get_meta(self::AUTOFILL_KEY) ?? false;
 
-        $this->useProjectReference  = (bool)$product->get_meta(self::USE_PROJECT_REFERENCE_KEY) ?: false;
-        $this->overrideThumb        = (bool)$product->get_meta(self::OVERRIDE_CART_THUMB_KEY) ?: false;
+        $this->useProjectReference  = (bool)$product->get_meta(self::USE_PROJECT_REFERENCE_KEY) ?? false;
+        $this->overrideThumb        = (bool)$product->get_meta(self::OVERRIDE_CART_THUMB_KEY) ?? false;
         
 		$this->PelemanPersonalisation = $product->get_meta(self::PELEMAN_PERSONALISATION_KEY) ?? '' ;
-        $this->editorInstructions   = !empty($product->get_meta(self::EDITOR_INSTRUCTIONS_KEY)) ? $product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) : Editor_Instructions::get_Defaults();
+        $this->editorInstructions   = (string)$product->get_meta(self::EDITOR_INSTRUCTIONS_KEY) ?? '';
+		
 		
     }
 
@@ -145,10 +146,26 @@ class Editor_Custom_Meta{
     public function set_peleman_personalisation($PelemanPersonalisation){
         $this->PelemanPersonalisation   = $PelemanPersonalisation;
     }
+	
     public function set_editor_instructions($editorInstructions){
-        $this->editorInstructions = $editorInstructions;
+		$instructions = '';
+		if(empty($editorInstructions)) {
+			$defaults = Editor_Instructions::get_Defaults(); 
+			foreach($defaults as $default){
+				if($default->is_enabled()){
+					$instructions .= ' ' . $default->get_key();
+				}
+			}
+		}else{
+			foreach($editorInstructions as $key => $value) {
+				$instructions .= ' ' . $key;
+        	}			
+		}
+		$this->editorInstructions = $instructions;
     }
-
+		    
+	
+	
         // getters for the properties here
     public function get_editorId() {
         return $this->editorId;
@@ -223,8 +240,20 @@ class Editor_Custom_Meta{
     }
     
     public function get_editor_instructions() {
-		   return $this->editorInstructions;
-        }
+		$instructionObjects = Editor_Instructions::get_Defaults();
+		if( !empty($this->editorInstructions) ) {
+			$instructionArray = explode(' ', $this->editorInstructions);
+			foreach( $instructionObjects as $instruction) {
+ 				if(in_array($instruction->get_key(), $instructionArray)){  
+					$instruction->set_enabled(true);
+				}else{
+					$instruction->set_enabled(false);
+				}
+			}
+    	}
+			return $instructionObjects;	
+	}
+        
         
     
 

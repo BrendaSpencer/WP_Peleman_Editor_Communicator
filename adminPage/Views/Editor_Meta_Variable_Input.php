@@ -21,7 +21,7 @@ class Editor_Meta_Variable_Input {
 		$Base_Meta = new Editor_Custom_Meta($product);
 		
 		
-        $uploadToggle = 'upload_' . $loop;
+
         $required = 'pie_req_' . $loop;
 
         woocommerce_wp_select([
@@ -49,7 +49,7 @@ class Editor_Meta_Variable_Input {
             'id'                => Editor_Custom_Meta::USE_PROJECT_REFERENCE_KEY . "[{$loop}]",
             'name'              =>  Editor_Custom_Meta::USE_PROJECT_REFERENCE_KEY . "[{$loop}]",
             'label'             => __('Use Reference Field', 'Peleman_Editor_Communicator'),
-            'value'             => $Base_Meta->get_useProjectReference() ? 'true' : 'false',
+            'value'             => $Base_Meta->get_useProjectReference() ? 'yes' : 'no',
             'desc_tip'          => true,
             'description'       => __('Enable/disable reference for this product/variation', 'Peleman_Editor_Communicator'),
             'wrapper_class'     => 'form-row form-row-first wsppe-form-row-padding-5',
@@ -229,11 +229,12 @@ class Editor_Meta_Variable_Input {
 		<div >
 			<?php 
         	$instructions = $Base_Meta->get_editor_instructions();
+   
         	$index = 0;
         	foreach ($instructions as $key => $instruction) {
             	woocommerce_wp_checkbox([
-                	'id'            => $key . "[{$loop}]",
-                	'name'          => $key . "[{$loop}]",
+                	'id'            => $instruction->get_key() . "[{$loop}]",
+                	'name'          => "instructions[" . $instruction->get_key()."]" . "[{$loop}]",
                 	'label'         => $instruction->get_label(),
                 	'value'         => $instruction->is_enabled() ? 'yes' : 'no',
                 	'desc_tip'      => true,
@@ -256,9 +257,9 @@ class Editor_Meta_Variable_Input {
 		$product = wc_get_product($variation_id);
 		
 		$Base_Meta = new Editor_Custom_Meta($product);
-		$post = filter_input_[INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+		$post = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 			
-		$Base_Meta->set_customizable((bool)$post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop] ?? '');
+		//$Base_Meta->set_customizable((bool)$post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop] ?? '');
 
 		$Base_Meta->set_editorId($post[Editor_Custom_Meta::PIE_EDITOR_ID_KEY][$loop] ?? '');
 		$Base_Meta->set_templateId((string)$post[Editor_Custom_Meta::PIE_TEMPLATE_ID_KEY][$loop] ?? '');
@@ -273,14 +274,15 @@ class Editor_Meta_Variable_Input {
     	$Base_Meta->set_numPages((int)$post[Editor_Custom_Meta::NUM_PAGES_KEY][$loop] ?? 1);
             
         $Base_Meta->set_usesImageUpload((bool)$post[Editor_Custom_Meta::USE_IMAGE_UPLOAD_KEY][$loop] ?? false);
-        $Base_Meta->set_minImages((int)$post[Editor_Custom_Meta::AUTOFILL_KEY][$loop] ?? 1);
+        $Base_Meta->set_minImages((int)$post[Editor_Custom_Meta::MIN_IMAGES_KEY][$loop] ?? 1);
         $Base_Meta->set_maxImages((int)$post[Editor_Custom_Meta::MAX_IMAGES_KEY][$loop] ?? 1);
-        $Base_Meta->set_autofill((bool) $post[Editor_Custom_Meta::MIN_IMAGES_KEY][$loop] ?? false);
+        $Base_Meta->set_autofill((bool) $post[Editor_Custom_Meta::AUTOFILL_KEY][$loop] ?? false);
 
         $Base_Meta->set_useProjectReference((bool)$post[Editor_Custom_Meta::USE_PROJECT_REFERENCE_KEY][$loop] ?? false);
         $Base_Meta->set_overrideThumb((bool)$post[Editor_Custom_Meta::OVERRIDE_CART_THUMB_KEY][$loop] ?? false);
         $Base_Meta->set_peleman_personalisation((string)$post[Editor_Custom_Meta::PELEMAN_PERSONALISATION_KEY][$loop] ?? '');
-        $Base_Meta->set_editor_instructions((array)$post[Editor_Custom_Meta::EDITOR_INSTRUCTIONS_KEY][$loop] ??  []);
+		error_log('POST in variable input === ' . $post['instructions']);
+        $Base_Meta->set_editor_instructions($post['instructions'] ??  null);
 
 		$Base_Meta->update_meta_data($product);
 	}
